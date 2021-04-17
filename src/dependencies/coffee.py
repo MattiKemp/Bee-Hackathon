@@ -36,7 +36,7 @@ def generate(data):
     plt.xlabel('Hours')
     plt.ylabel('Total Cups of Coffee')
     plt.legend(loc='upper left', handles=[matt_patch, connor_patch, jacob_patch, eric_patch])
-    plt.savefig('..\static\coffee.png')
+    plt.savefig(r'..\static\assets\img\coffee.png')
 
 
 d = db(host = '192.168.1.100')
