@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template, url_for, redirect
 
 app = Flask(__name__)
 
@@ -9,6 +9,10 @@ def hello_world():
 @app.route('/home/')
 def home():
     return render_template('Basic-Header.html')
+
+@app.route('/bonkers/')
+def bonkers():
+    return 'jaisodfjasdfijasoufbuiawfoijaweufhiuwhefouhaseifhaishdfhafh\nbonkers'
 
 if __name__ == '__main__':
    app.run(debug = True)
