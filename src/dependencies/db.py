@@ -25,6 +25,7 @@ class db:
             data.append([name, hour, cups])
             #print(name, hour, cups)
         cursor.close()
+        print(data)
         return data
 
     def addCoffeeData(self, name, hour, cups):
