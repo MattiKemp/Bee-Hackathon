@@ -4,14 +4,14 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello_world():
-    return render_template('home.html')
+    return render_template('Basic-Header.html')
 
 if __name__ == '__main__':
    app.run(debug = True)
 
 @app.route('/home/')
 def home():
-    return 'yes'
+    return render_template('Basic-Header.html')
 
 if __name__ == '__main__':
    app.run(debug = True)
