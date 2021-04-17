@@ -23,7 +23,7 @@ class db:
         data = list()
         for (name, hour, cups) in cursor:
             data.append([name, hour, cups])
-            print(name, hour, cups)
+            #print(name, hour, cups)
         cursor.close()
         return data
 
