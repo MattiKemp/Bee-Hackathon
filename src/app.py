@@ -13,6 +13,5 @@ if __name__ == '__main__':
 def home():
     return 'yes'
 
-
 if __name__ == '__main__':
    app.run(debug = True)
