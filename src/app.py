@@ -8,7 +8,7 @@ def hello_world():
 
 @app.route('/home/')
 def home():
-    return 'yes'
+    return render_template('Basic-Header.html')
 
 if __name__ == '__main__':
    app.run(debug = True)
