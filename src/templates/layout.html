@@ -4,30 +4,25 @@
     {% block head %}
     <meta charset="utf-8">
     <meta name = "viewport" content = "width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='assets/img/favicon.ico') }}">
 
 
    <!-- <link rel="stylesheet" href="style.css" /> -->
     <title>{% block title %}{% endblock %} - BEE</title>
-
+   <link href="{{url_for('static',filename='bootstrap/js/bootstrap.bundle.min.js')}}">
+   <link href="{{url_for('static',filename='assets/js/jquery.slim.min.js')}}">
    <link href="{{url_for('static',filename='bootstrap/css/bootstrap.min.css')}}", rel="stylesheet">
-    <link href="{{url_for('static',filename='assets/css/ocean.css')}}", rel="stylesheet">
-
+       <link href="{{url_for('static',filename='assets/css/ocean.css')}}", rel="stylesheet">
 
 
     {% endblock %}
     <h>yo, let's go bees</h>
 </head>
 <body>
-
     <div id="content">{% block content %}{% endblock %}</div>
     <div id="footer">
         {% block footer %}
         {% endblock %}
-
     </div>
-
-    <script src="{{url_for('static',filename='assets/js/jquery.slim.min.js')}}"></script>
-<script src="{{url_for('static',filename='bootstrap/js/bootstrap.bundle.min.js')}}"></script>
 </body>
-
 </html>
