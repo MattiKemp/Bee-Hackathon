@@ -15,17 +15,21 @@ class db:
             print(x)
         cursor.close()
     
-    # add methods here for interacting with the database
+    # add methods \/here\/ for interacting with the database
+
     def getCoffeeData(self):
         cursor = self.connection.cursor()
         cursor.execute('SELECT name, hour, cups FROM ocean.coffee')
+        data = list()
         for (name, hour, cups) in cursor:
-            print(name + ' ' + str(hour) + ' ' + str(cups))
+            data.append([name, hour, cups])
+            print(name, hour, cups)
         cursor.close()
+        return data
 
-    def addTemp(self):
+    def addCoffeeData(self, name, hour, cups):
         cursor = self.connection.cursor()
-        cursor.execute('INSERT INTO ocean.coffee (name, hour, cups) VALUES("connor", 0, 0)')
+        cursor.execute('INSERT INTO ocean.coffee (name, hour, cups) VALUES(%s, %s, %s)', (name, hour, cups))
         self.connection.commit()
         cursor.close()
 
