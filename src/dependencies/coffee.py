@@ -24,6 +24,8 @@ def generate(data):
     for l in plotData:
         for i in range(29, 0, -1):
             l[i] += sum(l[0:i])
+            print(l[i])
+        print(' ')
 
     plt.plot(plotData[0], 'r', plotData[1], 'b', plotData[2], 'g', plotData[3], 'y')
 
