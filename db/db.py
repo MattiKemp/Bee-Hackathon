@@ -21,7 +21,7 @@ class db:
 
 def main():
     print('---start---')
-    database = db()
+    database = db(host = '192.168.1.100')
     database.show_databases()
 
 if __name__ == '__main__':
