@@ -17,7 +17,7 @@ def home():
 
 @app.route('/bonkers/')
 def bonkers():
-    return 'jaisodfjasdfijasoufbuiawfoijaweufhiuwhefouhaseifhaishdfhafh\nbonkers'
+    return '<h1>bonkers</h1>'
 
 @app.route('/about/')
 def about():
