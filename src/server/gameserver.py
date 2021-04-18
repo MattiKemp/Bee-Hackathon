@@ -5,47 +5,64 @@ class gameserver:
         # the info in each connected is: [x,y,size,xvel,yvel,food,garbage]
         self.connected = connected
         #self.globalData 
-        self.size = 800
+        self.size = 2000
         # food: [x,y,foodorgarbage]
         self.food = set()
-        self.foodNum = 10
+        self.foodNum = 100
         self.obstacles = set()
-        self.obstacleNum = 5
+        self.obstacleNum = 10
         # init obstacles 
         while len(self.obstacles) < self.obstacleNum:
             self.obstacles.add((random.randint(0,self.size),random.randint(0,self.size)))
         print(self.obstacles)
-        
+        self.update()
 
     def update(self):
         print('updating')
         while len(self.food) < self.foodNum:
             self.food.add((random.randint(0,self.size),random.randint(0,self.size),random.randint(0,10)>3))
-        print(self.food)
+        toRemove = []
+        for i in self.food:
+            for j in self.connected:
+                if j['info'] != None:
+                    dist = math.sqrt((i[0]-j['info'][0])**2 +(i[1]-j['info'][1])**2)
+                    #print(dist)
+                    if dist < 75:
+                        print(j['info'])
+                        toRemove.append(i)
+                        j['info'][5] += 1
+                        print('touched')
+                        print(j['info'])
+        for i in toRemove:
+            self.food.remove(i)
 
     def getData(self, user):
         # first index is characters, second is food, third is obstacles
         # the first index of characters is the users info
-        data = [[]]
+        data = [[],[],[],[]]
         for i in self.connected:
             if i['info'] != None:
                 dist = math.sqrt((i['info'][0]-user[0])**2 +(i['info'][1]-user[1])**2)
-                if dist < i['info'][2] + user[2] and (i['info'][0] != user[0] and i['info'][1] != user[1]):
+                if dist < i['info'][2] + user[2] and (i['info'] != user):
                     print('collided')
                     #make it so they bump off each other.
-                if dist < 100:
+                #elif dist < 50:
+                #    print('duplicate?')
+                elif dist > 10 and dist < 800:
                     data[0].append(i['info'])
         for i in self.food: 
             dist = math.sqrt((i[0]-user[0])**2 +(i[1]-user[1])**2)
-            if dist < 10:
-                data[1].append(i)
+            #print(dist)
             if dist < 100:
                 data[1].append(i)
+            if dist < 800:
+                data[1].append(list(i))
                 data[1][-1][2]=True
         for i in self.obstacles: 
             dist = math.sqrt((i[0]-user[0])**2 +(i[1]-user[1])**2)
-            if dist < 100:
+            if dist < 800:
                 data[2].append(i)
+        data[-1].append(user)
         return data
 
 def main():
