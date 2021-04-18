@@ -10,18 +10,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Game</title>
     <script src="https://cdn.jsdelivr.net/npm/phaser@3.54.0/dist/phaser-arcade-physics.min.js"></script>
+    <script src="https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexvirtualjoystickplugin.min.js"></script>
+    <link rel="stylesheet" href="index.css">
 </head>
 <body>
-    <p id="score">Score: 0</p>
-    <p id="garbo">Garbage: 0</p>
-    <p id="hungy">Hunger: 100</p>
-    <p id="status">Status: Alive</p>
-    <p id="diff"></p>
+    <!-- <canvas id='container'></canvas> -->
+    <div id="info">
+        <span id="info1"><p id="score">Score: 0</p>
+            <p id="garbo">Garbage: 0</p><p id="hungy">Hunger: 100</p></span>
+        <span id="info2">
+            <p id="year">1950</p><div id="diff">Pollution</div> <p  style="height:100px; width:100%;">Press R to restart</p></span>
+    </div>
     <script>
+        //import VirtualJoystick from 'phaser3-rex-plugins/plugins/virtualjoystick.js';
         var dynamicData;
         var obstacles;
         var dynamicSprites = [];
         var load = false;
+        var difficulty = 0;
+        var difficultyYear = 1950;
         var ws = new WebSocket("ws://127.0.0.1:5678/");
             ws.onopen = function(e){
                 ws.send("data:" + '[100,450,1,0,0,0,0]');
@@ -40,15 +47,16 @@
                 //console.log(event.data);
             };
         var config = {
-            type: Phaser.AUTO,
-            width: 800,
-            height: 800,
+            type: Phaser.CANVAS,
+            width: 700,
+            height: 700,
+            //canvas: document.getElementById('container'),
             scale: {
                 mode: Phaser.Scale.FIT,
                 parent: 'phaser-example',
                 autoCenter: Phaser.Scale.CENTER_BOTH,
                 width: 800,
-                height: 600
+                height: 800
             },
             physics: {
                 default: 'arcade',
@@ -56,6 +64,13 @@
                     gravity: { y: 0 }
                 }
             },
+            // plugins:{
+            //     global: [{
+            //         key: 'rexVirtualJoystick',
+            //         plugin: VirtualJoystickPlugin,
+            //         start: true
+            //     }]
+            // },
             scene: {
                 preload: preload,
                 create: create,
@@ -63,18 +78,22 @@
                 render: render
             }
         };
-    
         var game = new Phaser.Game(config);
         var score = 0;
         var garbage = 0;
         var garbageCounter = 0;
         var hunger = 10000;
-        var size = 3;
+        var size = 1;
+        var goText;
+        var keyObj;
+        var resetBool = false;
         //var speed = 1;
         var scoreE = document.getElementById("score");
         var garboE = document.getElementById("garbo");
         var hungE = document.getElementById("hungy");
-        var statusE = document.getElementById("status");
+        var yearE = document.getElementById("year");
+        var diffE = document.getElementById("diff");
+        //var statusE = document.getElementById("status");
         function preload ()
         {
             //loading assets
@@ -187,8 +206,8 @@
             trashpiles = this.physics.add.staticGroup();
             
             for(var i = 0; i < obstacles[1].length; i++){
-                trashpiles.create(obstacles[1][i][0],obstacles[1][i][1],'largeGarbage');
-                zone = this.add.zone(obstacles[1][i][0],obstacles[1][i][1]).setSize(300,300);
+                dynamicSprites.push(trashpiles.create(obstacles[1][i][0],obstacles[1][i][1],'largeGarbage'));
+                zone = this.add.zone(obstacles[1][i][0],obstacles[1][i][1]).setSize(250,250);
                 this.physics.world.enable(zone);
                 this.physics.add.overlap(player, zone, trashSucc, null, this);
                 function trashSucc(player, zone){
@@ -199,6 +218,7 @@
                     player.setVelocityY(-160*Math.cos(player.rotation));
                     //console.log('Succing');
                 }
+                dynamicSprites.push(zone);
             }
 
             this.anims.create({
@@ -267,13 +287,19 @@
                 this.physics.pause();
                 player.setTint(0xff0000);
                 gameOver = true;
-                console.log('you died');
-                statusE.innerText = "Status: DEAD";
-                var goText = this.add.text(player.x-90, player.y, 'GAME OVER', { fontSize: '32px', fill: '#160303' });
+                //console.log('you died');
+                //statusE.innerText = "Status: DEAD";
+                goText = this.add.text(player.x-90, player.y, 'GAME OVER', { fontSize: '32px', fill: '#160303' });
             }
             //adding cursor keys input
             cursors = this.input.keyboard.createCursorKeys();
-
+            //reset key.
+            //var cursorKeys = this.input.keyboard.addKeys('R');
+            var keyObj = this.input.keyboard.addKey('R');
+            keyObj.on('down', function(event) {resetBool = true;});
+            //reset = this.input.keyboard.on('keydown -' + 'R', function (event) { console.log('reset'); size = 1;
+            //score = 1; garbageCounter = 0; garbage = 0; hunger=10000; gameOver = false; this.physics.reload(); player.setTint(00000000);
+            //player = this.physics.add.sprite(Math.floor(Math.random() * 3000), Math.floor(Math.random() * 3000), 'fish1').play('fish', true);});
             droplets = this.physics.add.staticGroup();
             for(var i = 0; i < dynamicData[1].length; i++){
                     if(dynamicData[1][i][2]){
@@ -326,9 +352,9 @@
                     this.physics.pause();
                     player.setTint(0xff0000);
                     gameOver = true;
-                    console.log('you died');
-                    statusE.innerText = "Status: DEAD";
-                    var goText = this.add.text(player.x-90, player.y, 'GAME OVER', { fontSize: '32px', fill: '#160303' });
+                    //console.log('you died');
+                    //statusE.innerText = "Status: DEAD";
+                    goText = this.add.text(player.x-90, player.y, 'GAME OVER', { fontSize: '32px', fill: '#160303' });
                 }
             }
 
@@ -346,9 +372,16 @@
                     this.physics.pause();
                     player.setTint(0xff0000);
                     gameOver = true;
-                    console.log('you died');
-                    statusE.innerText = "Status: DEAD";
-                    var goText = this.add.text(player.x-90, player.y, 'GAME OVER', { fontSize: '32px', fill: '#160303' });
+                    //console.log('you died');
+                    //statusE.innerText = "Status: DEAD";
+                    goText = this.add.text(player.x-90, player.y, 'GAME OVER', { fontSize: '32px', fill: '#160303' });
+                }
+                if(dynamicData[4][0][0] != difficultyYear){
+                    difficultyYear = dynamicData[4][0][0];
+                    difficulty = dynamicData[4][0][1];
+                    yearE.innerText = difficultyYear;
+                    difficultyPercent = (difficulty/3971900)*100;
+                    diffE.style = "width: " + difficultyPercent +"%; background:red;";
                 }
                 // if you got a kill and there was l00t, add it to our score
                 // and garbage
@@ -366,6 +399,7 @@
                 for(var i = 0; i < dynamicSprites.length; i++){
                     dynamicSprites[i].destroy();
                 }
+                await ws.send("obstacles");
                 load = true;
             }
             setInterval(reload,100);
@@ -373,6 +407,9 @@
 
         function update()
         {
+            //if(cursors.keyObj.isDown){
+            //    console.log('reset');
+            //}
             //controlling the palyer
             if (cursors.left.isDown)
             {
@@ -400,8 +437,7 @@
             }
             if(!cursors.down.isDown && !cursors.up.isDown && !cursors.left.isDown && !cursors.right.isDown)
             {
-                //if(player){
-                    //this is broken :(
+
                     player.setVelocityX(0);
                     player.setVelocityY(0);
                     if(size==2){
@@ -410,7 +446,6 @@
                     else{
                         player.play('fish', false);
                     }
-                //}
             }
             if(load){
                 for(var i = 0; i < dynamicData[1].length; i++){
@@ -424,6 +459,21 @@
                 for(var i = 0; i < dynamicData[0].length; i++){
                     dynamicSprites.push(this.physics.add.sprite(dynamicData[0][i][0],dynamicData[0][i][1],'gFish1'));
                 }
+                for(var i = 0; i < obstacles[1].length; i++){
+                    dynamicSprites.push(trashpiles.create(obstacles[1][i][0],obstacles[1][i][1],'largeGarbage'));
+                    zone = this.add.zone(obstacles[1][i][0],obstacles[1][i][1]).setSize(250,250);
+                    this.physics.world.enable(zone);
+                    this.physics.add.overlap(player, zone, trashSucc, null, this);
+                    function trashSucc(player, zone){
+                        //kinda works lol, your fish gets dioriented.
+                        angle = Phaser.Math.Angle.BetweenPoints(zone, player);
+                        player.rotation = angle + 270;
+                        player.setVelocityX(160*Math.sin(player.rotation));
+                        player.setVelocityY(-160*Math.cos(player.rotation));
+                        //console.log('Succing');
+                    }
+                    dynamicSprites.push(zone);
+                }
                 load = false;
             }
             //update hunger
@@ -435,8 +485,8 @@
                 player.setTint(0xff0000);
                 gameOver = true;
                 console.log('you died');
-                statusE.innerText = "Status: DEAD";
-                var goText = this.add.text(player.x-90, player.y, 'GAME OVER', { fontSize: '32px', fill: '#160303' });
+                //statusE.innerText = "Status: DEAD";
+                goText = this.add.text(player.x-90, player.y, 'GAME OVER', { fontSize: '32px', fill: '#160303' });
             }
             //slowly remove garbage from your system
             garbageCounter+=1;
@@ -447,12 +497,25 @@
                     garboE.innerText = "Garbage: " + garbage;
                 }
             }
+
+            if (resetBool){
+                console.log('reset'); size = 1;
+                score = 1; garbageCounter = 0; garbage = 0; hunger=10000; gameOver = false; /*this.physics.repeat();*/ player.setTint(00000000);
+                /*player = this.physics.add.sprite(Math.floor(Math.random() * 3000), Math.floor(Math.random() * 3000), 'fish1').play('fish', true);*/
+                player.x = Math.floor(Math.random() * 3000);
+                player.y = Math.floor(Math.random() * 3000);
+                player.setTexture('fish1');
+                player.play('fish', true);
+                this.physics.resume();
+                if(goText != null || goText != undefined){
+                    goText.destroy();
+                }
+                resetBool = false;
+            }
         }
 
         function render(){
         }
         </script>
-        <br>
-        <button onclick="myFunction()">Restart</button>
 </body>
 </html>
