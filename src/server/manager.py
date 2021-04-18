@@ -51,7 +51,9 @@ async def time(websocket, path):
         #    lastupdate = time.time()
 
 
-start_server = websockets.serve(time, '127.0.0.1', 5678)
+# run locally
+#start_server = websockets.serve(time, '127.0.0.1', 5678)
+start_server = websockets.serve(time, '0.0.0.0', 5678)
 
 asyncio.get_event_loop().run_until_complete(start_server)
 asyncio.get_event_loop().run_forever()
