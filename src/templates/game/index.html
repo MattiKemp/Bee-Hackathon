@@ -42,6 +42,13 @@
             type: Phaser.AUTO,
             width: 800,
             height: 800,
+            scale: {
+                mode: Phaser.Scale.FIT,
+                parent: 'phaser-example',
+                autoCenter: Phaser.Scale.CENTER_BOTH,
+                width: 800,
+                height: 600
+            },
             physics: {
                 default: 'arcade',
                 arcade: {
@@ -165,13 +172,13 @@
             //main player
             //var player;
             if(size==1){
-                player = this.physics.add.sprite(100, 450, 'fish1').play('fish', true);
+                player = this.physics.add.sprite(Math.floor(Math.random() * 3000), Math.floor(Math.random() * 3000), 'fish1').play('fish', true);
             }
             else if(size==2){
-                player = this.physics.add.sprite(100, 450, 'frog1').play('frog', true);
+                player = this.physics.add.sprite(Math.floor(Math.random() * 3000), Math.floor(Math.random() * 3000), 'frog1').play('frog', true);
             }
             else{
-                player = this.physics.add.sprite(100, 450, 'frog2').play('frog', true);
+                player = this.physics.add.sprite(Math.floor(Math.random() * 3000), Math.floor(Math.random() * 3000), 'frog2').play('frog', true);
             }
             player.setBounce(0.2);
             player.setCollideWorldBounds(true);
@@ -261,6 +268,7 @@
                 gameOver = true;
                 console.log('you died');
                 statusE.innerText = "Status: DEAD";
+                var goText = this.add.text(player.x-90, player.y, 'GAME OVER', { fontSize: '32px', fill: '#160303' });
             }
             //adding cursor keys input
             cursors = this.input.keyboard.createCursorKeys();
@@ -319,6 +327,7 @@
                     gameOver = true;
                     console.log('you died');
                     statusE.innerText = "Status: DEAD";
+                    var goText = this.add.text(player.x-90, player.y, 'GAME OVER', { fontSize: '32px', fill: '#160303' });
                 }
             }
 
@@ -338,10 +347,11 @@
                     gameOver = true;
                     console.log('you died');
                     statusE.innerText = "Status: DEAD";
+                    var goText = this.add.text(player.x-90, player.y, 'GAME OVER', { fontSize: '32px', fill: '#160303' });
                 }
                 // if you got a kill and there was l00t, add it to our score
                 // and garbage
-                if(dynamicData[3][0][5] != 0 || dynamicData[3][0][6] != 0){
+                if(dynamicData[3][0][5] > 0 || dynamicData[3][0][6] > 0){
                     score += dynamicData[3][0][5];
                     garbage += dynamicData[3][0][6];
                     //update score and garbage
@@ -416,15 +426,16 @@
                 load = false;
             }
             //update hunger
-            if(hunger >= 0){
+            if(hunger > 0){
                 hungE.innerText = 'Hunger: ' + hunger/100;
             }
-            if(hunger < 0){
+            if(hunger <= 0){
                 this.physics.pause();
                 player.setTint(0xff0000);
                 gameOver = true;
                 console.log('you died');
                 statusE.innerText = "Status: DEAD";
+                var goText = this.add.text(player.x-90, player.y, 'GAME OVER', { fontSize: '32px', fill: '#160303' });
             }
             //slowly remove garbage from your system
             garbageCounter+=1;
@@ -440,5 +451,7 @@
         function render(){
         }
         </script>
+        <br>
+        <button onclick="myFunction()">Restart</button>
 </body>
 </html>
