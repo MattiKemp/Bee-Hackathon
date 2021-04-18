@@ -32,3 +32,6 @@ We gained an appreciation for the challenges and benefits to web-development. We
 ## What's next for Water.io
 
 There are a TON of features that we didn't have time to add. Being forced to prioritize some technical tasks is required, but here are some of the things that we have yet to get to.
+Clearer UI/UX
+Better web hosting :(
+
