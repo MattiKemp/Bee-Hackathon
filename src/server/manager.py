@@ -10,7 +10,7 @@ import json
 connected = deque()
 game = gameserver.gameserver(connected)
 
-connected.appendleft({'websocket':None, 'path':None, 'info':[50,50,2,2,2]})
+connected.appendleft({'websocket':None, 'path':None, 'info':[50,50,2,2,2,2,2]})
 
 lastupdate = time.time() 
 
@@ -20,7 +20,7 @@ def encodeJSON(data):
 async def time(websocket, path):
     global lastupdate
     global connceted
-    data = {'websocket':websocket, 'path':path, 'info':[-1,-1,-1,-1,-1]}
+    data = {'websocket':websocket, 'path':path, 'info':[-1,-1,-1,-1,-1,-1,-1]}
     connected.appendleft(data)
     #while True:
     async for message in websocket:
@@ -31,7 +31,7 @@ async def time(websocket, path):
             game.update()
             await websocket.send("d" + encodeJSON(game.getData(data['info'])))
         if("obstacles" in message):
-            await websocket.send("o" + encodeJSON(list(game.obstacles)))
+            await websocket.send("o" + encodeJSON([list(game.obstacles),list(game.trashpiles)]))
         #if("user" in message):
         #    await websocket.send("u" + encodeJSON(data['info']))
         #now = datetime.datetime.utcnow().isoformat() + 'Z'

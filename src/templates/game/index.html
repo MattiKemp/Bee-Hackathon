@@ -11,6 +11,11 @@
     <script src="https://cdn.jsdelivr.net/npm/phaser@3.54.0/dist/phaser-arcade-physics.min.js"></script>
 </head>
 <body>
+    <p id="score">Score: 0</p>
+    <p id="garbo">Garbage: 0</p>
+    <p id="hungy">Hunger: 100</p>
+    <p id="status">Status: Alive</p>
+    <p id="diff"></p>
     <script>
         var dynamicData;
         var obstacles;
@@ -18,7 +23,7 @@
         var load = false;
         var ws = new WebSocket("ws://127.0.0.1:5678/");
             ws.onopen = function(e){
-                ws.send("data:" + '[100,450,2,0,0,0,0]');
+                ws.send("data:" + '[100,450,1,0,0,0,0]');
                 ws.send("update");
                 ws.send("obstacles");
                 //ws.send("user");
@@ -52,71 +57,142 @@
         };
     
         var game = new Phaser.Game(config);
+        var score = 0;
+        var garbage = 0;
+        var garbageCounter = 0;
+        var hunger = 10000;
+        var size = 3;
+        //var speed = 1;
+        var scoreE = document.getElementById("score");
+        var garboE = document.getElementById("garbo");
+        var hungE = document.getElementById("hungy");
+        var statusE = document.getElementById("status");
         function preload ()
         {
             //loading assets
             //Photo by Berend de Kort from Pexels
             //Photo by Berend de Kort from Pexels
-            this.load.image('ocean', '/static/assets/img/ocean.jpg');
-            this.load.image('ground', '/static/assets/img/ground.png');
+            // this.load.image('ocean', '/static/assets/img/ocean.jpg');
+            // this.load.image('ground', '/static/assets/img/ground.png');
+            // //Photo by mali maeder from Pexels
+            // this.load.image('apple', '/static/assets/img/apple.jpg');
+            // //Photo by Gezer Amorim from Pexels
+            // this.load.image('droplet', '/static/assets/img/droplet.jpeg');
+
+            // //load player (red) fish
+            // this.load.image('fish1', '/static/assets/img/fish/redFish.png');
+            // this.load.image('fish2', '/static/assets/img/fish/redFish2.png');
+            // this.load.image('fish3', '/static/assets/img/fish/redFish3.png');
+            // this.load.image('fish4', '/static/assets/img/fish/redFish4.png');
+            // this.load.image('fish5', '/static/assets/img/fish/redFish5.png');
+
+            // //load other (green) fish
+            // this.load.image('gFish1', '/static/assets/img/fish/greenFish.png');
+            // this.load.image('gFish2', '/static/assets/img/fish/greenFish2.png');
+            // this.load.image('gFish3', '/static/assets/img/fish/greenFish3.png');
+            // this.load.image('gFish4', '/static/assets/img/fish/greenFish4.png');
+            // this.load.image('gFish5', '/static/assets/img/fish/greenFish5.png');
+
+            // //load frog
+            // this.load.image('frog1', '/static/assets/img/frog/frog1.png');
+            // this.load.image('frog2', '/static/assets/img/frog/frog2.png');
+            // this.load.image('frog3', '/static/assets/img/frog/frog3.png');
+
+            // //load snake
+            // this.load.image('snake1', '/static/assets/img/snake/snake1.png')
+            // this.load.image('snake2', '/static/assets/img/snake/snake2.png')
+            // this.load.image('snake3', '/static/assets/img/snakse/snake3.png')
+
+            // //load garbage
+            // this.load.image('cup', '/static/assets/img/cup.png');
+            // this.load.image('detergent', '/static/assets/img/detergent.png');
+            // this.load.image('milkJug', '/static/assets/img/milk_jug.png');
+            // this.load.image('bottle', '/static/assets/img/plastic_bottle.png');
+            // this.load.image('largeGarbage', '/static/assets/img/large_garbage.png');
+
+            this.load.image('ocean', './img/ocean.jpg');
+            this.load.image('ground', './img/ground.png');
             //Photo by mali maeder from Pexels
-            this.load.image('apple', '/static/assets/img/apple.jpg');
+            this.load.image('apple', './img/apple.jpg');
             //Photo by Gezer Amorim from Pexels
-            this.load.image('droplet', '/static/assets/img/droplet.jpeg');
+            this.load.image('droplet', './droplet.jpeg');
 
             //load player (red) fish
-            this.load.image('fish1', '/static/assets/img/fish/redFish.png');
-            this.load.image('fish2', '/static/assets/img/fish/redFish2.png');
-            this.load.image('fish3', '/static/assets/img/fish/redFish3.png');
-            this.load.image('fish4', '/static/assets/img/fish/redFish4.png');
-            this.load.image('fish5', '/static/assets/img/fish/redFish5.png');
+            this.load.image('fish1', './img/fish/redFish.png');
+            this.load.image('fish2', './img/fish/redFish2.png');
+            this.load.image('fish3', './img/fish/redFish3.png');
+            this.load.image('fish4', './img/fish/redFish4.png');
+            this.load.image('fish5', './img/fish/redFish5.png');
 
             //load other (green) fish
-            this.load.image('gFish1', '/static/assets/img/fish/greenFish.png');
-            this.load.image('gFish2', '/static/assets/img/fish/greenFish2.png');
-            this.load.image('gFish3', '/static/assets/img/fish/greenFish3.png');
-            this.load.image('gFish4', '/static/assets/img/fish/greenFish4.png');
-            this.load.image('gFish5', '/static/assets/img/fish/greenFish5.png');
+            this.load.image('gFish1', './img/fish/greenFish.png');
+            this.load.image('gFish2', './img/fish/greenFish2.png');
+            this.load.image('gFish3', './img/fish/greenFish3.png');
+            this.load.image('gFish4', './img/fish/greenFish4.png');
+            this.load.image('gFish5', './img/fish/greenFish5.png');
 
             //load frog
-            this.load.image('frog1', '/static/assets/img/frog/frog1.png');
-            this.load.image('frog2', '/static/assets/img/frog/frog2.png');
-            this.load.image('frog3', '/static/assets/img/frog/frog3.png');
+            this.load.image('frog1', './img/frog/frog1.png');
+            this.load.image('frog2', './img/frog/frog2.png');
+            this.load.image('frog3', './img/frog/frog3.png');
 
             //load snake
-            this.load.image('snake1', '/static/assets/img/snake/snake1.png')
-            this.load.image('snake2', '/static/assets/img/snake/snake2.png')
-            this.load.image('snake3', '/static/assets/img/snake/snake3.png')
+            this.load.image('snake1', './img/snake/snake1.png')
+            this.load.image('snake2', './img/snake/snake2.png')
+            this.load.image('snake3', './img/snake/snake3.png')
 
             //load garbage
-            this.load.image('cup', '/static/assets/img/cup.png');
-            this.load.image('detergent', '/static/assets/img/detergent.png');
-            this.load.image('milkJug', '/static/assets/img/milk_jug.png');
-            this.load.image('bottle', '/static/assets/img/plastic_bottle.png');
-            this.load.image('largeGarbage', '/static/assets/img/large_garbage.png');
+            this.load.image('cup', './img/cup.png');
+            this.load.image('detergent', './img/detergent.png');
+            this.load.image('milkJug', './img/milk_jug.png');
+            this.load.image('bottle', './img/plastic_bottle.png');
+            this.load.image('largeGarbage', './img/large_garbage.png');
         }
     
         function create ()
         {
-            var score = 0;
-            var scoreText;
             //adding an image to the scene
-            this.add.image(0,0, 'ocean').setOrigin(0, 0);
+            this.add.image(0, 0, 'ocean').setOrigin(0, 0).setScale(2);
+            this.physics.world.setBounds(0, 0, 3000, 3000);
             //this.add.tileSprite(0,0,1000,1000, 'ocean');
             //adding platforms
             platforms = this.physics.add.staticGroup();
-            //platforms.create(400, 825, 'ground').setScale(4).refreshBody();
-            //platforms.create(600, 500, 'ground');
-            //platforms.create(50, 250, 'ground');
-            for(var i = 0; i < obstacles.length; i++){
-                platforms.create(obstacles[i][0],obstacles[i][1],'ground');
+            for(var i = 0; i < obstacles[0].length; i++){
+                platforms.create(obstacles[0][i][0],obstacles[0][i][1],'ground');
+            }
+            
+
+            //main player
+            //var player;
+            if(size==1){
+                player = this.physics.add.sprite(100, 450, 'fish1').play('fish', true);
+            }
+            else if(size==2){
+                player = this.physics.add.sprite(100, 450, 'frog1').play('frog', true);
+            }
+            else{
+                player = this.physics.add.sprite(100, 450, 'frog2').play('frog', true);
+            }
+            player.setBounce(0.2);
+            player.setCollideWorldBounds(true);
+
+            trashpiles = this.physics.add.staticGroup();
+            
+            for(var i = 0; i < obstacles[1].length; i++){
+                trashpiles.create(obstacles[1][i][0],obstacles[1][i][1],'largeGarbage');
+                zone = this.add.zone(obstacles[1][i][0],obstacles[1][i][1]).setSize(300,300);
+                this.physics.world.enable(zone);
+                this.physics.add.overlap(player, zone, trashSucc, null, this);
+                function trashSucc(player, zone){
+                    //kinda works lol, your fish gets dioriented.
+                    angle = Phaser.Math.Angle.BetweenPoints(zone, player);
+                    player.rotation = angle + 270;
+                    player.setVelocityX(160*Math.sin(player.rotation));
+                    player.setVelocityY(-160*Math.cos(player.rotation));
+                    //console.log('Succing');
+                }
             }
 
-            //players
-            player = this.physics.add.sprite(100, 450, 'fish1').play('fish', true);
-            //console.log(this.player.velocity);
-            player.setBounce(0.2);
-            //player.setCollideWorldBounds(true);
             this.anims.create({
                 key: 'fish',
                 frames: [
@@ -174,35 +250,33 @@
             });
 
             
-
-            //this.add.sprite(32,32,'fish1').play('fish');
             
             //adding collison to the player
             this.physics.add.collider(player, platforms);
 
+            this.physics.add.overlap(player, trashpiles, hitTrashpile, null, this);
+            function hitTrashpile(player, trashpile){
+                this.physics.pause();
+                player.setTint(0xff0000);
+                gameOver = true;
+                console.log('you died');
+                statusE.innerText = "Status: DEAD";
+            }
             //adding cursor keys input
             cursors = this.input.keyboard.createCursorKeys();
 
-            //collectable water droplets
-            //droplets = this.physics.add.group({
-            //    key: 'droplet',
-                //repeat: 0,
-                //setXY: { x: 12, y: 0, stepX: 70 }
-            //});
             droplets = this.physics.add.staticGroup();
             for(var i = 0; i < dynamicData[1].length; i++){
-                //if(dynamicData[2][i]){
-                    //droplets.create(dynamicData[i][0],dynamicData[i][1],'droplet');
-                    //dynamicSprites.push(this.physics.add.sprite(dynamicData[1][i][0],dynamicData[1][i][1],'droplet'));
-                    //this.physics.add.sprite(dynamicData[1][i][0],dynamicData[1][i][1],'droplet')
-                    //console.log("test");
-                    dynamicSprites.push(droplets.create(dynamicData[1][i][0],dynamicData[1][i][1],'droplet'));
-                //}
-            }
+                    if(dynamicData[1][i][2]){
+                        dynamicSprites.push(droplets.create(dynamicData[1][i][0],dynamicData[1][i][1],'milkJug'));
+                    }
+                    else{
+                        dynamicSprites.push(droplets.create(dynamicData[1][i][0],dynamicData[1][i][1],'detergent'));
+                    }
+                }
             for(var i = 0; i < dynamicData[0].length; i++){
-                dynamicSprites.push(this.physics.add.sprite(dynamicData[0][i][0],dynamicData[0][i][1],'apple').setScale(.02));//.setVelocity(dynamicData[0][i][3],dynamicData[0][i][4]));
+                dynamicSprites.push(this.physics.add.sprite(dynamicData[0][i][0],dynamicData[0][i][1],'gFish1').setScale(.02));//.setVelocity(dynamicData[0][i][3],dynamicData[0][i][4]));
             }
-            //platforms.create(obstacles[i][0],obstacles[i][1],'ground');
             droplets.children.iterate(function (child) {
 
                 child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
@@ -216,57 +290,68 @@
             this.physics.add.overlap(player, droplets, collectDroplet, null, this);
             function collectDroplet (player, droplet)
             {
-                //droplet.disableBody(true, true);
-                //score += 10;
-                scoreText.setText('Score: ' + score);
-                //creates a bomb once all stars are collected
-                // if (droplets.countActive(true) === 0)
-                // {
-                //     droplets.children.iterate(function (child) {
-
-                //         child.enableBody(true, child.x, 0, true, true);
-
-                //     });
-
-                //     var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
-
-                //     var bomb = bombs.create(x, 16, 'bomb');
-                //     bomb.setBounce(1);
-                //     bomb.setCollideWorldBounds(true);
-                //     bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
-
-                // }
-
+                //console.log(droplet.texture.key);
+                droplet.disableBody(true, true);
+                if(droplet.texture.key=='milkJug'){
+                    score += 1;
+                    if(hunger <= 7000){
+                        hunger+=3000;
+                    }
+                    else{
+                        hunger=10000;
+                    }
+                }
+                else{
+                    garbage += 1;
+                    //speed = size - garbage/20;
+                }
+                scoreE.innerText = 'Score: ' + score;
+                garboE.innerText = "Garbage: " + garbage;
+                if(score%20==0 && score!=0){
+                    size+=1;
+                    if(size==2){
+                        player.setTexture('frog1').play('frog', true);
+                    }
+                }
+                if(garbage%20==0 && garbage!=0){
+                    this.physics.pause();
+                    player.setTint(0xff0000);
+                    gameOver = true;
+                    console.log('you died');
+                    statusE.innerText = "Status: DEAD";
+                }
             }
 
             //score
-            scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
-        
-            //bad guy (bombs)
-            //bombs = this.physics.add.group();
+            //scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
 
-            //this.physics.add.collider(bombs, platforms);
-
-            // this.physics.add.collider(player, bombs, hitBomb, null, this);
-            // function hitBomb (player, bomb)
-            // {
-            //     this.physics.pause();
-
-            //     player.setTint(0xff0000);
-
-            //     player.anims.play('turn');
-
-            //     gameOver = true;
-            // }
-           //game.camera.follow(apple);
+            
             this.cameras.main.startFollow(player);
             async function reload(){
                 await ws.send("update");
-                score = dynamicData[3][0][5];
-                var playerData = [parseInt(this.player.x), parseInt(this.player.y), 2, 0, 0, score, 0];
-                console.log("data:" + String(playerData));
+                var playerData = [parseInt(this.player.x), parseInt(this.player.y), size, 0, 0, score, garbage];
+                //console.log("data:" + String(playerData));
+                //console.log(dynamicData[3][0]);
+                if(dynamicData[3][0] == [-1,-1,-1,-1,-1,-1,-1]){
+                    this.physics.pause();
+                    player.setTint(0xff0000);
+                    gameOver = true;
+                    console.log('you died');
+                    statusE.innerText = "Status: DEAD";
+                }
+                // if you got a kill and there was l00t, add it to our score
+                // and garbage
+                if(dynamicData[3][0][5] != 0 || dynamicData[3][0][6] != 0){
+                    score += dynamicData[3][0][5];
+                    garbage += dynamicData[3][0][6];
+                    //update score and garbage
+                    scoreE.innerText = 'Score: ' + score;
+                    garboE.innerText = "Garbage: " + garbage;
+                    hunger = 10000;
+                }
                 await ws.send("data:[" + String(playerData)+"]");
-                console.log(dynamicData[3]);
+                //console.log(dynamicData[3]);
+                //have old spirtes be destroyed in the next run through
                 for(var i = 0; i < dynamicSprites.length; i++){
                     dynamicSprites[i].destroy();
                 }
@@ -281,56 +366,79 @@
             if (cursors.left.isDown)
             {
                 player.rotation += -.07;
-
+                hunger -= 1*size;
                 //player.anims.play('left', true);
             }
             if (cursors.right.isDown)
             {
                 player.rotation += .07;
-
+                hunger -= 1*size;
                 //player.anims.play('right', true);
             }
             if (cursors.up.isDown)
             {
-                player.setVelocityY(-160*Math.cos(player.rotation));
-                player.setVelocityX(160*Math.sin(player.rotation));
+                player.setVelocityY(-160*Math.cos(player.rotation)*(1+size*.1-garbage/30));
+                player.setVelocityX(160*Math.sin(player.rotation)*(1+size*.1-garbage/30));
+                hunger -= 2*size;
             }
             if (cursors.down.isDown)
             {
-                player.setVelocityY(160*Math.cos(player.rotation));
-                player.setVelocityX(-160*Math.sin(player.rotation));
+                player.setVelocityY(160*Math.cos(player.rotation)*(1+size*.1-garbage/30)/2);
+                player.setVelocityX(-160*Math.sin(player.rotation)*(1+size*.1-garbage/30)/2);
+                hunger -= 2*size;
             }
             if(!cursors.down.isDown && !cursors.up.isDown && !cursors.left.isDown && !cursors.right.isDown)
             {
-                player.setVelocityX(0);
-                player.setVelocityY(0);
-                player.play('fish', false);
-
-                //player.anims.play('turn');
+                //if(player){
+                    //this is broken :(
+                    player.setVelocityX(0);
+                    player.setVelocityY(0);
+                    if(size==2){
+                        player.play('frog', false);
+                    }
+                    else{
+                        player.play('fish', false);
+                    }
+                //}
             }
-
-            //example of jumping
-            //if (cursors.up.isDown && player.body.touching.down)
-            //{
-            //    player.setVelocityY(-330);
-            //}
             if(load){
-                //console.log(dynamicData[3][5]);
                 for(var i = 0; i < dynamicData[1].length; i++){
-                    //dynamicSprites.push(this.physics.add.sprite(dynamicData[1][i][0],dynamicData[1][i][1],'droplet'));
-                    dynamicSprites.push(droplets.create(dynamicData[1][i][0],dynamicData[1][i][1],'droplet'));
+                    if(dynamicData[1][i][2]){
+                        dynamicSprites.push(droplets.create(dynamicData[1][i][0],dynamicData[1][i][1],'milkJug'));
+                    }
+                    else{
+                        dynamicSprites.push(droplets.create(dynamicData[1][i][0],dynamicData[1][i][1],'detergent'));
+                    }
                 }
                 for(var i = 0; i < dynamicData[0].length; i++){
-                    dynamicSprites.push(this.physics.add.sprite(dynamicData[0][i][0],dynamicData[0][i][1],'apple').setScale(.02).setVelocity(dynamicData[0][i][3]));
+                    dynamicSprites.push(this.physics.add.sprite(dynamicData[0][i][0],dynamicData[0][i][1],'gFish1'));
                 }
                 load = false;
+            }
+            //update hunger
+            if(hunger >= 0){
+                hungE.innerText = 'Hunger: ' + hunger/100;
+            }
+            if(hunger < 0){
+                this.physics.pause();
+                player.setTint(0xff0000);
+                gameOver = true;
+                console.log('you died');
+                statusE.innerText = "Status: DEAD";
+            }
+            //slowly remove garbage from your system
+            garbageCounter+=1;
+            if(garbageCounter>850){
+                garbageCounter=0;
+                if(garbage > 0){
+                    garbage -= 1;
+                    garboE.innerText = "Garbage: " + garbage;
+                }
             }
         }
 
         function render(){
-
         }
-
         </script>
 </body>
 </html>
