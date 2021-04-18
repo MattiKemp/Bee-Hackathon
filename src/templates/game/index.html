@@ -53,8 +53,6 @@
             platforms.create(400, 825, 'ground').setScale(4).refreshBody();
             platforms.create(600, 500, 'ground');
             platforms.create(50, 250, 'ground');
-            //platforms.create(750, 220, 'ground');
-            //game.world.setBounds(0, 0, 1920, 1920);
             //players
             player = this.physics.add.sprite(100, 450, 'apple').setScale(.02);
 
@@ -183,6 +181,7 @@
                 //player.anims.play('turn');
             }
 
+            //example of jumping
             //if (cursors.up.isDown && player.body.touching.down)
             //{
             //    player.setVelocityY(-330);
@@ -190,8 +189,7 @@
         }
 
         function render(){
-            //game.debug.cameraInfo(game.camera, 32, 32);
-            //game.debug.spriteCoords(player, 32, 500);
+
         }
 
         </script>
