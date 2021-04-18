@@ -1,4 +1,6 @@
 <!-- tutorial link:https://phaser.io/tutorials/making-your-first-phaser-3-game/part2  -->
+<!-- credit to Recycle items art by Clint Bellanger -->
+<!-- credit to asalinasci www.vedoque.com -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -39,6 +41,37 @@
             this.load.image('apple', '/static/assets/img/apple.jpg');
             //Photo by Gezer Amorim from Pexels
             this.load.image('droplet', '/static/assets/img/droplet.jpeg');
+
+            //load player (red) fish
+            this.load.image('fish1', '/static/assets/img/fish/redFish.png');
+            this.load.image('fish2', '/static/assets/img/fish/redFish2.png');
+            this.load.image('fish3', '/static/assets/img/fish/redFish3.png');
+            this.load.image('fish4', '/static/assets/img/fish/redFish4.png');
+            this.load.image('fish5', '/static/assets/img/fish/redFish5.png');
+
+            //load other (green) fish
+            this.load.image('gFish1', '/static/assets/img/fish/greenFish.png');
+            this.load.image('gFish2', '/static/assets/img/fish/greenFish2.png');
+            this.load.image('gFish3', '/static/assets/img/fish/greenFish3.png');
+            this.load.image('gFish4', '/static/assets/img/fish/greenFish4.png');
+            this.load.image('gFish5', '/static/assets/img/fish/greenFish5.png');
+
+            //load frog
+            this.load.image('frog1', '/static/assets/img/frog/frog1.png');
+            this.load.image('frog2', '/static/assets/img/frog/frog2.png');
+            this.load.image('frog3', '/static/assets/img/frog/frog3.png');
+
+            //load snake
+            this.load.image('snake1', '/static/assets/img/snake/snake1.png')
+            this.load.image('snake2', '/static/assets/img/snake/snake2.png')
+            this.load.image('snake3', '/static/assets/img/snake/snake3.png')
+
+            //load garbage
+            this.load.image('cup', '/static/assets/img/cup.png');
+            this.load.image('detergent', '/static/assets/img/detergent.png');
+            this.load.image('milkJug', '/static/assets/img/milk_jug.png');
+            this.load.image('bottle', '/static/assets/img/plastic_bottle.png');
+            this.load.image('largeGarbage', '/static/assets/img/large_garbage.png');
         }
     
         function create ()
@@ -53,8 +86,65 @@
             platforms.create(400, 825, 'ground').setScale(4).refreshBody();
             platforms.create(600, 500, 'ground');
             platforms.create(50, 250, 'ground');
+
+            this.anims.create({
+                key: 'fish',
+                frames: [
+                    {key: 'fish1'},
+                    {key: 'fish2'},
+                    {key: 'fish3'},
+                    {key: 'fish2'},
+                    {key: 'fish1'},
+                    {key: 'fish4'},
+                    {key: 'fish5'},
+                    {key: 'fish4'}
+            ],
+            frameRate: 16,
+            repeat: -1
+            });
+
+            this.anims.create({
+                key: 'gFish',
+                frames: [
+                    {key: 'gFish1'},
+                    {key: 'gFish2'},
+                    {key: 'gFish3'},
+                    {key: 'gFish2'},
+                    {key: 'gFish1'},
+                    {key: 'gFish4'},
+                    {key: 'gFish5'},
+                    {key: 'gFish4'}
+            ],
+            frameRate: 16,
+            repeat: -1
+            });
+
+            this.anims.create({
+                key: 'frog',
+                frames: [
+                    {key: 'frog1'},
+                    {key: 'frog2'},
+                    {key: 'frog3'},
+                    {key: 'frog1'}
+            ],
+            frameRate: 8,
+            repeat: -1
+            });
+
+            this.anims.create({
+                key: 'snake',
+                frames: [
+                    {key: 'snake1'},
+                    {key: 'snake2'},
+                    {key: 'snake3'},
+                    {key: 'snake1'}
+            ],
+            frameRate: 8,
+            repeat: -1
+            });
+
             //players
-            player = this.physics.add.sprite(100, 450, 'apple').setScale(.02);
+            player = this.physics.add.sprite(32,32, 'fish1').play('fish', true);
 
             player.setBounce(0.2);
             //player.setCollideWorldBounds(true);
@@ -79,6 +169,10 @@
                 repeat: -1
             });
 
+            
+
+            //this.add.sprite(32,32,'fish1').play('fish');
+            
             //adding collison to the player
             this.physics.add.collider(player, platforms);
 
@@ -156,27 +250,31 @@
             //controlling the palyer
             if (cursors.left.isDown)
             {
-                player.setVelocityX(-160);
+                player.rotation += -.07;
 
                 //player.anims.play('left', true);
             }
-            else if (cursors.right.isDown)
+            if (cursors.right.isDown)
             {
-                player.setVelocityX(160);
+                player.rotation += .07;
 
                 //player.anims.play('right', true);
             }
-            else if (cursors.up.isDown)
+            if (cursors.up.isDown)
             {
-                player.setVelocityY(-160);
+                player.setVelocityY(-160*Math.cos(player.rotation));
+                player.setVelocityX(160*Math.sin(player.rotation));
             }
-            else if (cursors.down.isDown)
+            if (cursors.down.isDown)
             {
-                player.setVelocityY(160);
+                player.setVelocityY(160*Math.cos(player.rotation));
+                player.setVelocityX(-160*Math.sin(player.rotation));
             }
-            else
+            if(!cursors.down.isDown && !cursors.up.isDown && !cursors.left.isDown && !cursors.right.isDown)
             {
                 player.setVelocityX(0);
+                player.setVelocityY(0);
+                player.play('fish', false);
 
                 //player.anims.play('turn');
             }
