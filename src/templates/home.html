@@ -1,15 +1,24 @@
 {% extends "layout.html" %}
-{% block title %}Index{% endblock %}
+{% block title %}Home{% endblock %}
 {% block head %}
     {{ super() }}
 {% endblock %}
 {% block content %}
 
 <header><!-- Page Wrapper -->
-<div style="background: url({{url_for('static',filename='assets/img/ocean.jpg')}})" class="page-holder bg-cover">
+<div style="background: url({{url_for('static',filename='assets/img/header_img.png')}})" class="page-holder bg-cover">
 
-</div>
   <div class="container py-5">
+    <header class="text-center text-white py-5">
+      <h1 class="display-4 font-weight-bold mb-4">Our Beautiful Earth</h1>
+      <p class="lead mb-0">Soiled by plastic waste in our oceans.</p>
+      <p class="font-italic">Snippet By <a href="https://bootstrapious.com" class="text-white">
+          <u>Bootstrapious</u></a>
+          <br><br><br><br></br>
+      </p>
+      <p></p>
+      <p> </p>
+    </header>
 
     <!--<div class="text-white">
       <p class="lead">It's not a good approch to deal directly with <code class="bg-white px-2 py-1 rounded">body</code> So, create a wrapper container and make it a full-window height.</p>
