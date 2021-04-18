@@ -10,15 +10,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Game</title>
     <script src="https://cdn.jsdelivr.net/npm/phaser@3.54.0/dist/phaser-arcade-physics.min.js"></script>
-    <script src="https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexvirtualjoystickplugin.min.js"></script>
-    <link rel="stylesheet" href="index.css">
+<!--    <script src="https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexvirtualjoystickplugin.min.js"></script>-->
+<!--    <link rel="stylesheet" href="index.css">-->
 </head>
 <body>
     <!-- <canvas id='container'></canvas> -->
     <div id="info">
-        <span id="info1"><p id="score">Score: 0</p>
+        <span id="info1" style="float:left; width:50%;"><p id="score">Score: 0</p>
             <p id="garbo">Garbage: 0</p><p id="hungy">Hunger: 100</p></span>
-        <span id="info2">
+        <span id="info2" style="float:left; width:50%;">
             <p id="year">1950</p><div id="diff">Pollution</div> <p  style="height:100px; width:100%;">Press R to restart</p></span>
     </div>
     <script>
@@ -51,13 +51,13 @@
             width: 700,
             height: 700,
             //canvas: document.getElementById('container'),
-            scale: {
-                mode: Phaser.Scale.FIT,
-                parent: 'phaser-example',
-                autoCenter: Phaser.Scale.CENTER_BOTH,
-                width: 800,
-                height: 800
-            },
+            // scale: {
+            //     mode: Phaser.Scale.FIT,
+            //     parent: 'phaser-example',
+            //     autoCenter: Phaser.Scale.CENTER_BOTH,
+            //     width: 800,
+            //     height: 800
+             //},
             physics: {
                 default: 'arcade',
                 arcade: {
@@ -83,7 +83,7 @@
         var garbage = 0;
         var garbageCounter = 0;
         var hunger = 10000;
-        var size = 1;
+        var size = 3;
         var goText;
         var keyObj;
         var resetBool = false;
@@ -99,81 +99,93 @@
             //loading assets
             //Photo by Berend de Kort from Pexels
             //Photo by Berend de Kort from Pexels
-            // this.load.image('ocean', '/static/assets/img/ocean.jpg');
-            // this.load.image('ground', '/static/assets/img/ground.png');
-            // //Photo by mali maeder from Pexels
-            // this.load.image('apple', '/static/assets/img/apple.jpg');
-            // //Photo by Gezer Amorim from Pexels
-            // this.load.image('droplet', '/static/assets/img/droplet.jpeg');
-
-            // //load player (red) fish
-            // this.load.image('fish1', '/static/assets/img/fish/redFish.png');
-            // this.load.image('fish2', '/static/assets/img/fish/redFish2.png');
-            // this.load.image('fish3', '/static/assets/img/fish/redFish3.png');
-            // this.load.image('fish4', '/static/assets/img/fish/redFish4.png');
-            // this.load.image('fish5', '/static/assets/img/fish/redFish5.png');
-
-            // //load other (green) fish
-            // this.load.image('gFish1', '/static/assets/img/fish/greenFish.png');
-            // this.load.image('gFish2', '/static/assets/img/fish/greenFish2.png');
-            // this.load.image('gFish3', '/static/assets/img/fish/greenFish3.png');
-            // this.load.image('gFish4', '/static/assets/img/fish/greenFish4.png');
-            // this.load.image('gFish5', '/static/assets/img/fish/greenFish5.png');
-
-            // //load frog
-            // this.load.image('frog1', '/static/assets/img/frog/frog1.png');
-            // this.load.image('frog2', '/static/assets/img/frog/frog2.png');
-            // this.load.image('frog3', '/static/assets/img/frog/frog3.png');
-
-            // //load snake
-            // this.load.image('snake1', '/static/assets/img/snake/snake1.png')
-            // this.load.image('snake2', '/static/assets/img/snake/snake2.png')
-            // this.load.image('snake3', '/static/assets/img/snakse/snake3.png')
-
-            // //load garbage
-            // this.load.image('cup', '/static/assets/img/cup.png');
-            // this.load.image('detergent', '/static/assets/img/detergent.png');
-            // this.load.image('milkJug', '/static/assets/img/milk_jug.png');
-            // this.load.image('bottle', '/static/assets/img/plastic_bottle.png');
-            // this.load.image('largeGarbage', '/static/assets/img/large_garbage.png');
-
-            this.load.image('ocean', './img/ocean.jpg');
-            this.load.image('ground', './img/ground.png');
+            this.load.image('ocean', '/static/assets/img/ocean.jpg');
+            this.load.image('ground', '/static/assets/img/ground.png');
             //Photo by mali maeder from Pexels
-            this.load.image('apple', './img/apple.jpg');
+            this.load.image('apple', '/static/assets/img/apple.jpg');
             //Photo by Gezer Amorim from Pexels
-            this.load.image('droplet', './droplet.jpeg');
+            this.load.image('droplet', '/static/assets/img/droplet.jpeg');
 
             //load player (red) fish
-            this.load.image('fish1', './img/fish/redFish.png');
-            this.load.image('fish2', './img/fish/redFish2.png');
-            this.load.image('fish3', './img/fish/redFish3.png');
-            this.load.image('fish4', './img/fish/redFish4.png');
-            this.load.image('fish5', './img/fish/redFish5.png');
+            this.load.image('fish1', '/static/assets/img/fish/redFish.png');
+            this.load.image('fish2', '/static/assets/img/fish/redFish2.png');
+            this.load.image('fish3', '/static/assets/img/fish/redFish3.png');
+            this.load.image('fish4', '/static/assets/img/fish/redFish4.png');
+            this.load.image('fish5', '/static/assets/img/fish/redFish5.png');
 
             //load other (green) fish
-            this.load.image('gFish1', './img/fish/greenFish.png');
-            this.load.image('gFish2', './img/fish/greenFish2.png');
-            this.load.image('gFish3', './img/fish/greenFish3.png');
-            this.load.image('gFish4', './img/fish/greenFish4.png');
-            this.load.image('gFish5', './img/fish/greenFish5.png');
+            this.load.image('gFish1', '/static/assets/img/fish/greenFish.png');
+            this.load.image('gFish2', '/static/assets/img/fish/greenFish2.png');
+            this.load.image('gFish3', '/static/assets/img/fish/greenFish3.png');
+            this.load.image('gFish4', '/static/assets/img/fish/greenFish4.png');
+            this.load.image('gFish5', '/static/assets/img/fish/greenFish5.png');
 
             //load frog
-            this.load.image('frog1', './img/frog/frog1.png');
-            this.load.image('frog2', './img/frog/frog2.png');
-            this.load.image('frog3', './img/frog/frog3.png');
+            this.load.image('frog1', '/static/assets/img/frog/frog1.png');
+            this.load.image('frog2', '/static/assets/img/frog/frog2.png');
+            this.load.image('frog3', '/static/assets/img/frog/frog3.png');
 
             //load snake
-            this.load.image('snake1', './img/snake/snake1.png')
-            this.load.image('snake2', './img/snake/snake2.png')
-            this.load.image('snake3', './img/snake/snake3.png')
+            this.load.image('snake1', '/static/assets/img/snake/snake1.png')
+            this.load.image('snake2', '/static/assets/img/snake/snake2.png')
+            this.load.image('snake3', '/static/assets/img/snake/snake3.png')
+
+            //load yellow fish
+            this.load.image('yFish1', '/static/assets/img/yellowFish/yellowFish1.png');
+            this.load.image('yFish2', '/static/assets/img/yellowFish/yellowFish2.png');
+            this.load.image('yFish3', '/static/assets/img/yellowFish/yellowFish3.png');
+            this.load.image('yFish4', '/static/assets/img/yellowFish/yellowFish4.png');
+            this.load.image('yFish5', '/static/assets/img/yellowFish/yellowFish5.png');
 
             //load garbage
-            this.load.image('cup', './img/cup.png');
-            this.load.image('detergent', './img/detergent.png');
-            this.load.image('milkJug', './img/milk_jug.png');
-            this.load.image('bottle', './img/plastic_bottle.png');
-            this.load.image('largeGarbage', './img/large_garbage.png');
+            this.load.image('cup', '/static/assets/img/cup.png');
+            this.load.image('detergent', '/static/assets/img/detergent.png');
+            this.load.image('milkJug', '/static/assets/img/milk_jug.png');
+            this.load.image('bottle', '/static/assets/img/plastic_bottle.png');
+            this.load.image('largeGarbage', '/static/assets/img/large_garbage.png');
+
+            this.load.image('prawn', '/static/assets/img/prawn.png');
+            this.load.image('island', '/static/assets/img/island.png');
+            this.load.image('predator1', '/static/assets/img/predator1.png');
+            this.load.image('predator2', '/static/assets/img/predator2.png');
+
+            // this.load.image('ocean', './img/ocean.jpg');
+            // this.load.image('ground', './img/ground.png');
+            // //Photo by mali maeder from Pexels
+            // this.load.image('apple', './img/apple.jpg');
+            // //Photo by Gezer Amorim from Pexels
+            // this.load.image('droplet', './droplet.jpeg');
+            //
+            // //load player (red) fish
+            // this.load.image('fish1', './img/fish/redFish.png');
+            // this.load.image('fish2', './img/fish/redFish2.png');
+            // this.load.image('fish3', './img/fish/redFish3.png');
+            // this.load.image('fish4', './img/fish/redFish4.png');
+            // this.load.image('fish5', './img/fish/redFish5.png');
+            //
+            // //load other (green) fish
+            // this.load.image('gFish1', './img/fish/greenFish.png');
+            // this.load.image('gFish2', './img/fish/greenFish2.png');
+            // this.load.image('gFish3', './img/fish/greenFish3.png');
+            // this.load.image('gFish4', './img/fish/greenFish4.png');
+            // this.load.image('gFish5', './img/fish/greenFish5.png');
+            //
+            // //load frog
+            // this.load.image('frog1', './img/frog/frog1.png');
+            // this.load.image('frog2', './img/frog/frog2.png');
+            // this.load.image('frog3', './img/frog/frog3.png');
+            //
+            // //load snake
+            // this.load.image('snake1', './img/snake/snake1.png')
+            // this.load.image('snake2', './img/snake/snake2.png')
+            // this.load.image('snake3', './img/snake/snake3.png')
+            //
+            // //load garbage
+            // this.load.image('cup', './img/cup.png');
+            // this.load.image('detergent', './img/detergent.png');
+            // this.load.image('milkJug', './img/milk_jug.png');
+            // this.load.image('bottle', './img/plastic_bottle.png');
+            // this.load.image('largeGarbage', './img/large_garbage.png');
         }
     
         function create ()
@@ -185,7 +197,7 @@
             //adding platforms
             platforms = this.physics.add.staticGroup();
             for(var i = 0; i < obstacles[0].length; i++){
-                platforms.create(obstacles[0][i][0],obstacles[0][i][1],'ground');
+                platforms.create(obstacles[0][i][0],obstacles[0][i][1],'island');
             }
             
 
@@ -197,8 +209,14 @@
             else if(size==2){
                 player = this.physics.add.sprite(Math.floor(Math.random() * 3000), Math.floor(Math.random() * 3000), 'frog1').play('frog', true);
             }
+            else if(size==3){
+                player = this.physics.add.sprite(Math.floor(Math.random() * 3000), Math.floor(Math.random() * 3000), 'snake1').play('snake', true);
+            }
+            else if(size==4){
+                player = this.physics.add.sprite(Math.floor(Math.random() * 3000), Math.floor(Math.random() * 3000), 'yellowFish1').play('yellowFish', true);
+            }
             else{
-                player = this.physics.add.sprite(Math.floor(Math.random() * 3000), Math.floor(Math.random() * 3000), 'frog2').play('frog', true);
+                player = this.physics.add.sprite(Math.floor(Math.random() * 3000), Math.floor(Math.random() * 3000), 'predator1').play('predator', true);
             }
             player.setBounce(0.2);
             player.setCollideWorldBounds(true);
@@ -277,7 +295,31 @@
             repeat: -1
             });
 
-            
+            this.anims.create({
+                key: 'yellowFish',
+                frames: [
+                    {key: 'yFish1'},
+                    {key: 'yFish2'},
+                    {key: 'yFish3'},
+                    {key: 'yFish2'},
+                    {key: 'yFish1'},
+                    {key: 'yFish4'},
+                    {key: 'yFish5'},
+                    {key: 'yFish4'},
+            ],
+            frameRate: 16,
+            repeat: -1
+            });
+
+            this.anims.create({
+                key: 'predator',
+                frames: [
+                    {key: 'predator1'},
+                    {key: 'predator2'}
+            ],
+            frameRate: 4,
+            repeat: -1
+            });
             
             //adding collison to the player
             this.physics.add.collider(player, platforms);
@@ -303,7 +345,7 @@
             droplets = this.physics.add.staticGroup();
             for(var i = 0; i < dynamicData[1].length; i++){
                     if(dynamicData[1][i][2]){
-                        dynamicSprites.push(droplets.create(dynamicData[1][i][0],dynamicData[1][i][1],'milkJug'));
+                        dynamicSprites.push(droplets.create(dynamicData[1][i][0],dynamicData[1][i][1],'prawn'));
                     }
                     else{
                         dynamicSprites.push(droplets.create(dynamicData[1][i][0],dynamicData[1][i][1],'detergent'));
@@ -327,7 +369,7 @@
             {
                 //console.log(droplet.texture.key);
                 droplet.disableBody(true, true);
-                if(droplet.texture.key=='milkJug'){
+                if(droplet.texture.key=='prawn'){
                     score += 1;
                     if(hunger <= 7000){
                         hunger+=3000;
@@ -346,6 +388,15 @@
                     size+=1;
                     if(size==2){
                         player.setTexture('frog1').play('frog', true);
+                    }
+                    else if(size==3){
+                        player.setTexture('snake1').play('snake', true);
+                    }
+                    else if(size==4){
+                        player.setTexture('yellowFish1').play('yellowFish', true);
+                    }
+                    else if(size==5){
+                        player.setTexture('predator1').play('predator', true);
                     }
                 }
                 if(garbage%20==0 && garbage!=0){
@@ -443,14 +494,23 @@
                     if(size==2){
                         player.play('frog', false);
                     }
+                    else if(size==3){
+                        player.play('snake', false);
+                    }
+                    else if(size==4){
+                        player.play('yellowFish', false);
+                    }
+                    else if(size==5){
+                        player.play('predator', false);
+                    }
                     else{
-                        player.play('fish', false);
+                        player.play('fish', false)
                     }
             }
             if(load){
                 for(var i = 0; i < dynamicData[1].length; i++){
                     if(dynamicData[1][i][2]){
-                        dynamicSprites.push(droplets.create(dynamicData[1][i][0],dynamicData[1][i][1],'milkJug'));
+                        dynamicSprites.push(droplets.create(dynamicData[1][i][0],dynamicData[1][i][1],'prawn'));
                     }
                     else{
                         dynamicSprites.push(droplets.create(dynamicData[1][i][0],dynamicData[1][i][1],'detergent'));
@@ -500,7 +560,7 @@
 
             if (resetBool){
                 console.log('reset'); size = 1;
-                score = 1; garbageCounter = 0; garbage = 0; hunger=10000; gameOver = false; /*this.physics.repeat();*/ player.setTint(00000000);
+                score = 1; garbageCounter = 0; garbage = 0; hunger=10000; gameOver = false; /*this.physics.repeat();*/ player.setTint(0x000000);
                 /*player = this.physics.add.sprite(Math.floor(Math.random() * 3000), Math.floor(Math.random() * 3000), 'fish1').play('fish', true);*/
                 player.x = Math.floor(Math.random() * 3000);
                 player.y = Math.floor(Math.random() * 3000);
