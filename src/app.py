@@ -23,6 +23,10 @@ def bonkers():
 def about():
     return render_template('about.html')
 
+@app.route('/info/')
+def info():
+    return render_template('info.html')
+
 @app.route('/favicon.ico')
 def favicon():
     return send_from_directory(os.path.join(app.root_path, 'static'),

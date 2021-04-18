@@ -1,10 +1,37 @@
-<!DOCTYPE html>
+{% extends "layout.html" %}
+{% block title %}Index{% endblock %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block content %}
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+  <body>
 
-</body>
+    <main role="main" class="container">
+        <div>
+            <h1>About the Data</h1>
+        </div>
+      <div class="starter-template">
+          <h1>About the Data</h1>
+        <p class="lead">The data used was an estimated amount of microplastics and macroplastics in the surface ocean between the years 1950 and 2050.<br><br>Accurate readings were taken up to 2019, then estimations were made beyond that for 3 possible outcomes: <br>-Emissions grow through 2050<br>-Emissions level off in 2020<br>-Emissions stop in 2020<br></br></p>
+      </div>
+
+        <div>
+            <img src="{{url_for('static',filename='assets/img/microplastics.png')}}" alt="Microplastics Graph" width="1020" height="720"></img>
+            <p><br></p>
+            <img src="{{url_for('static',filename='assets/img/macroplastics.png')}}" alt="Macroplastics Graph" width="1020" height="720"></img>
+        </div>
+
+    </main><!-- /.container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+    <script src="../../assets/js/vendor/popper.min.js"></script>
+    <script src="../../dist/js/bootstrap.min.js"></script>
+  </body>
 </html>
+{% endblock %}

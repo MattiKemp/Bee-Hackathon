@@ -4,13 +4,33 @@
     {{ super() }}
 {% endblock %}
 {% block content %}
+<html lang="en">
+  <body>
 
-<p>About us:</p>
-<h class = "header">We are the Bees</h>
-<p>            </p>
-<p class = "centered"> nigt</p>
+    <main role="main" class="container">
+        <div>
+            <h1>Our Mission</h1>
+        </div>
 
-<p>Graph of coffee intake over time</p>
-<img src = "{{url_for('static',filename='coffee.png')}}", alt="Graph of Coffee Intake over Time">
+      <div class="starter-template">
+        <h1>Our Mission</h1>
+        <p class="lead">Our mission is to bring awareness to the alarming amount of pollution in the ocean and how it affects the environment.<br> With only 30 hours, time was short, but coffee was plentiful.</p>
+      </div>
 
+        <div>
+        <img src="{{url_for('static',filename='coffee.png')}}"></img>
+    </div>
+
+    </main><!-- /.container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+    <script src="../../assets/js/vendor/popper.min.js"></script>
+    <script src="../../dist/js/bootstrap.min.js"></script>
+  </body>
+</html>
 {% endblock %}
