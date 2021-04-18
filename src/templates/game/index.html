@@ -17,7 +17,7 @@
             physics: {
                 default: 'arcade',
                 arcade: {
-                    gravity: { y: 100 }
+                    gravity: { y: 0 }
                 }
             },
             scene: {
@@ -33,12 +33,12 @@
         {
             //loading assets
             //Photo by Berend de Kort from Pexels
-            this.load.image('ocean', './assets/ocean.jpg');
-            this.load.image('ground', './assets/ground.png');
+            this.load.image('ocean', '/static/assets/img/ocean.jpg');
+            this.load.image('ground', '/static/assets/img/ground.png');
             //Photo by mali maeder from Pexels
-            this.load.image('apple', './assets/apple.jpg');
+            this.load.image('apple', '/static/assets/img/apple.jpg');
             //Photo by Gezer Amorim from Pexels
-            this.load.image('droplet', './assets/droplet.jpeg');
+            this.load.image('droplet', '/static/assets/img/droplet.jpeg');
         }
     
         function create ()
