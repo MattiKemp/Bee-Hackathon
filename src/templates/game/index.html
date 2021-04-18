@@ -54,16 +54,44 @@
         {
             //loading assets
             //Photo by Berend de Kort from Pexels
-            //this.load.image('ocean', '/static/assets/img/ocean.jpg');
-            this.load.image('ocean', './assets/ocean.jpg');
-            //this.load.image('ground', '/static/assets/img/ground.png');
-            this.load.image('ground', './assets/ground.png');
+            //Photo by Berend de Kort from Pexels
+            this.load.image('ocean', '/static/assets/img/ocean.jpg');
+            this.load.image('ground', '/static/assets/img/ground.png');
             //Photo by mali maeder from Pexels
-            //this.load.image('apple', '/static/assets/img/apple.jpg');
-            this.load.image('apple', './assets/apple.jpg');
+            this.load.image('apple', '/static/assets/img/apple.jpg');
             //Photo by Gezer Amorim from Pexels
-            //this.load.image('droplet', '/static/assets/img/droplet.jpeg');
-            this.load.image('droplet', './assets/droplet.jpeg');
+            this.load.image('droplet', '/static/assets/img/droplet.jpeg');
+
+            //load player (red) fish
+            this.load.image('fish1', '/static/assets/img/fish/redFish.png');
+            this.load.image('fish2', '/static/assets/img/fish/redFish2.png');
+            this.load.image('fish3', '/static/assets/img/fish/redFish3.png');
+            this.load.image('fish4', '/static/assets/img/fish/redFish4.png');
+            this.load.image('fish5', '/static/assets/img/fish/redFish5.png');
+
+            //load other (green) fish
+            this.load.image('gFish1', '/static/assets/img/fish/greenFish.png');
+            this.load.image('gFish2', '/static/assets/img/fish/greenFish2.png');
+            this.load.image('gFish3', '/static/assets/img/fish/greenFish3.png');
+            this.load.image('gFish4', '/static/assets/img/fish/greenFish4.png');
+            this.load.image('gFish5', '/static/assets/img/fish/greenFish5.png');
+
+            //load frog
+            this.load.image('frog1', '/static/assets/img/frog/frog1.png');
+            this.load.image('frog2', '/static/assets/img/frog/frog2.png');
+            this.load.image('frog3', '/static/assets/img/frog/frog3.png');
+
+            //load snake
+            this.load.image('snake1', '/static/assets/img/snake/snake1.png')
+            this.load.image('snake2', '/static/assets/img/snake/snake2.png')
+            this.load.image('snake3', '/static/assets/img/snake/snake3.png')
+
+            //load garbage
+            this.load.image('cup', '/static/assets/img/cup.png');
+            this.load.image('detergent', '/static/assets/img/detergent.png');
+            this.load.image('milkJug', '/static/assets/img/milk_jug.png');
+            this.load.image('bottle', '/static/assets/img/plastic_bottle.png');
+            this.load.image('largeGarbage', '/static/assets/img/large_garbage.png');
         }
     
         function create ()
@@ -83,29 +111,64 @@
             }
 
             //players
-            player = this.physics.add.sprite(100, 450, 'apple').setScale(.02).setVelocity(100,100);
+            player = this.physics.add.sprite(100, 450, 'fish1').play('fish', true);
             //console.log(this.player.velocity);
             player.setBounce(0.2);
             //player.setCollideWorldBounds(true);
-            //animations aren't done properly here
             this.anims.create({
-                key: 'left',
-                frames: this.anims.generateFrameNumbers('apple', { start: 0, end: 3 }),
-                frameRate: 10,
-                repeat: -1
+                key: 'fish',
+                frames: [
+                    {key: 'fish1'},
+                    {key: 'fish2'},
+                    {key: 'fish3'},
+                    {key: 'fish2'},
+                    {key: 'fish1'},
+                    {key: 'fish4'},
+                    {key: 'fish5'},
+                    {key: 'fish4'}
+            ],
+            frameRate: 16,
+            repeat: -1
             });
 
             this.anims.create({
-                key: 'turn',
-                frames: [ { key: 'apple', frame: 4 } ],
-                frameRate: 20
+                key: 'gFish',
+                frames: [
+                    {key: 'gFish1'},
+                    {key: 'gFish2'},
+                    {key: 'gFish3'},
+                    {key: 'gFish2'},
+                    {key: 'gFish1'},
+                    {key: 'gFish4'},
+                    {key: 'gFish5'},
+                    {key: 'gFish4'}
+            ],
+            frameRate: 16,
+            repeat: -1
             });
 
             this.anims.create({
-                key: 'right',
-                frames: this.anims.generateFrameNumbers('apple', { start: 5, end: 8 }),
-                frameRate: 10,
-                repeat: -1
+                key: 'frog',
+                frames: [
+                    {key: 'frog1'},
+                    {key: 'frog2'},
+                    {key: 'frog3'},
+                    {key: 'frog1'}
+            ],
+            frameRate: 8,
+            repeat: -1
+            });
+
+            this.anims.create({
+                key: 'snake',
+                frames: [
+                    {key: 'snake1'},
+                    {key: 'snake2'},
+                    {key: 'snake3'},
+                    {key: 'snake1'}
+            ],
+            frameRate: 8,
+            repeat: -1
             });
 
             //adding collison to the player
@@ -211,27 +274,31 @@
             //controlling the palyer
             if (cursors.left.isDown)
             {
-                player.setVelocityX(-160);
+                player.rotation += -.07;
 
                 //player.anims.play('left', true);
             }
-            else if (cursors.right.isDown)
+            if (cursors.right.isDown)
             {
-                player.setVelocityX(160);
+                player.rotation += .07;
 
                 //player.anims.play('right', true);
             }
-            else if (cursors.up.isDown)
+            if (cursors.up.isDown)
             {
-                player.setVelocityY(-160);
+                player.setVelocityY(-160*Math.cos(player.rotation));
+                player.setVelocityX(160*Math.sin(player.rotation));
             }
-            else if (cursors.down.isDown)
+            if (cursors.down.isDown)
             {
-                player.setVelocityY(160);
+                player.setVelocityY(160*Math.cos(player.rotation));
+                player.setVelocityX(-160*Math.sin(player.rotation));
             }
-            else
+            if(!cursors.down.isDown && !cursors.up.isDown && !cursors.left.isDown && !cursors.right.isDown)
             {
                 player.setVelocityX(0);
+                player.setVelocityY(0);
+                player.play('fish', false);
 
                 //player.anims.play('turn');
             }
