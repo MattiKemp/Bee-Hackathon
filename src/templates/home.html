@@ -5,118 +5,34 @@
 {% endblock %}
 {% block content %}
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-  <div class="container">
-    <a class="navbar-brand" href="#">Start Bootstrap</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-    <div class="collapse navbar-collapse" id="navbarResponsive">
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item active">
-          <a class="nav-link" href="/bonkers">Home
-                <span class="sr-only">(current)</span>
-              </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">About</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Services</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Contact</a>
-        </li>
-      </ul>
-    </div>
-  </div>
-</nav>
+<header><!-- Page Wrapper -->
+<div style="background: url({{url_for('static',filename='assets/img/header_img.png')}})" class="page-holder bg-cover">
 
-<header>
-  <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-    <ol class="carousel-indicators">
-      <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-      <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-      <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-    </ol>
-    <div class="carousel-inner" role="listbox">
-      <!-- Slide One - Set the background image for this slide in the line below -->
-      <div class="carousel-item active"
-           style="background-image: url('{{url_for('static',filename='assets/img/borabora.jpg')}}')">
-        <div class="carousel-caption d-none d-md-block">
-         <h3 class="display-4">First Slide</h3>
-          <p class="lead">This is a description for the first slide.</p>
-        </div>
-      </div>
-      <!-- Slide Two - Set the background image for this slide in the line below -->
-      <div class="carousel-item" style="background-image: url('{{url_for('static',filename='assets/img/ocean.jpg')}}')">
-        <div class="carousel-caption d-none d-md-block">
-          <h3 class="display-4">Second Slide</h3>
-          <p class="lead">This is a description for the second slide.</p>
-        </div>
-      </div>
-      <!-- Slide Three - Set the background image for this slide in the line below -->
-      <div class="carousel-item" style="background-image: url('{{url_for('static',filename='assets/img/niagra.jpg')}}')">
-        <div class="carousel-caption d-none d-md-block">
-          <h3 class="display-4">Third Slide</h3>
-          <p class="lead">This is a description for the third slide.</p>
-        </div>
-      </div>
-    </div>
-    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="sr-only">Previous</span>
-        </a>
-    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="sr-only">Next</span>
-        </a>
-  </div>
-</header>
+  <div class="container py-5">
+    <header class="text-center text-white py-5">
+      <h1 class="display-4 font-weight-bold mb-4">Bootstrap Background Image</h1>
+      <p class="lead mb-0">Create a responsive full-page background image window using Bootstrap 4.</p>
+      <p class="font-italic">Snippet By <a href="https://bootstrapious.com" class="text-white">
+          <u>Bootstrapious</u></a>
+      </p>
+      <p></p>
+      <p> </p>
+    </header>
 
-
-<!--
-<section>
-    <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="bottom" title="Poggers">
-    Let's go Bees
-    </button>
-</section>
--->
+    <!--<div class="text-white">
+      <p class="lead">It's not a good approch to deal directly with <code class="bg-white px-2 py-1 rounded">body</code> So, create a wrapper container and make it a full-window height.</p>
+      <p class="lead">Set the wrapper initial height to full window height using <code class="bg-white px-2 py-1 rounded">min-height: 100vh</code></p>
+      <p class="lead">Use <code class="bg-white px-2 py-1 rounded">.bg-cover</code> to make the background fit all viewports.</p>
+    </div>-->
 
 <!-- Page Content -->
-<section class="py-5">
-  <div class="container">
-    <h1 class="font-weight-light">Half Page Image Slider</h1>
-   <!-- <p class="lead">The background images for the slider are set directly in the HTML using inline CSS. The images in this snippet are from <a href="https://unsplash.com">Unsplash</a>!</p>
-  -->
-  </div>
-</section>
 
-<section>
-    <div class="container">
-  <div class="jumbotron">
-    <h1>Did You Know?</h1>
-    <p>America must spend $255 billion in the next five years to
-        prevent deterioration of water infrastructure. We plan to spend half that amount.
-    </p>
-      <p>
-          Globally, 1.2 billion people live in areas with inadequate water supply.
-      </p>
-      <p>
-          1.6 billion live in areas where there is water, but they can't afford to drink it.
-      </p>
-      <p>
-          443 million school days are lost each year due to water-related diseases.
-      </p>
+
   </div>
 </div>
-</section>
-
-</section>
-<div class="container">
-<div class="jumbotron">
+</header>
     <h1>Coffee Update</h1>
-</div>
-</div>
-<img src = "{{url_for('static',filename='coffee.png')}}", alt="Graph of Coffee Intake over Time">
+
+<script src="{{url_for('static',filename='bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+    <script src="{{url_for('static',filename='assets/js/jquery.slim.min.js')}}"></script>
 {% endblock %}
