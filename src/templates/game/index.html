@@ -29,7 +29,7 @@
         var load = false;
         var difficulty = 0;
         var difficultyYear = 1950;
-        var ws = new WebSocket("ws://127.0.0.1:5678/");
+        var ws = new WebSocket("ws://173.21.221.23:5678/");
             ws.onopen = function(e){
                 ws.send("data:" + '[100,450,1,0,0,0,0]');
                 ws.send("update");
@@ -83,7 +83,7 @@
         var garbage = 0;
         var garbageCounter = 0;
         var hunger = 10000;
-        var size = 3;
+        var size = 1;
         var goText;
         var keyObj;
         var resetBool = false;
