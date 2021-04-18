@@ -5,37 +5,9 @@
 {% endblock %}
 {% block content %}
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-  <div class="container">
-    <a class="navbar-brand" href="#">Start Bootstrap</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-    <div class="collapse navbar-collapse" id="navbarResponsive">
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item active">
-          <a class="nav-link" href="/bonkers">Home
-                <span class="sr-only">(current)</span>
-              </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">About</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Services</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Contact</a>
-        </li>
-      </ul>
-    </div>
-  </div>
-</nav>
-
 <header><!-- Page Wrapper -->
-<div style="background: url(https://i.postimg.cc/ZnHTP71s/aircraft-airplane-boat-1575833.jpg)" class="page-holder bg-cover">
+<div style="background: url({{url_for('static',filename='assets/img/header_img.png')}})" class="page-holder bg-cover">
 
-<<<<<<< HEAD
   <div class="container py-5">
     <header class="text-center text-white py-5">
       <h1 class="display-4 font-weight-bold mb-4">Bootstrap Background Image</h1>
@@ -43,13 +15,15 @@
       <p class="font-italic">Snippet By <a href="https://bootstrapious.com" class="text-white">
           <u>Bootstrapious</u></a>
       </p>
+      <p></p>
+      <p> </p>
     </header>
 
-    <div class="text-white">
+    <!--<div class="text-white">
       <p class="lead">It's not a good approch to deal directly with <code class="bg-white px-2 py-1 rounded">body</code> So, create a wrapper container and make it a full-window height.</p>
       <p class="lead">Set the wrapper initial height to full window height using <code class="bg-white px-2 py-1 rounded">min-height: 100vh</code></p>
       <p class="lead">Use <code class="bg-white px-2 py-1 rounded">.bg-cover</code> to make the background fit all viewports.</p>
-    </div>
+    </div>-->
 
 <!-- Page Content -->
 
@@ -58,5 +32,7 @@
 </div>
 </header>
     <h1>Coffee Update</h1>
-<img src = "{{url_for('static',filename='coffee.png')}}", alt="Graph of Coffee Intake over Time">
+
+<script src="{{url_for('static',filename='bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+    <script src="{{url_for('static',filename='assets/js/jquery.slim.min.js')}}"></script>
 {% endblock %}

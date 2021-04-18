@@ -19,6 +19,10 @@ def home():
 def bonkers():
     return 'jaisodfjasdfijasoufbuiawfoijaweufhiuwhefouhaseifhaishdfhafh\nbonkers'
 
+@app.route('/about/')
+def about():
+    return render_template('about.html')
+
 @app.route('/favicon.ico')
 def favicon():
     return send_from_directory(os.path.join(app.root_path, 'static'),

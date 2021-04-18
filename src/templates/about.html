@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+{% block title %}Index{% endblock %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block content %}
+
+<p>About us:</p>
+<h class = "header">YOOOO</h>
+<p> need to account for paddings :)</p>
+<p class = "centered"> nigt</p>
+
+<p>Graph of coffee intake over time</p>
+<img src = "{{url_for('static',filename='coffee.png')}}", alt="Graph of Coffee Intake over Time">
+
+{% endblock %}
