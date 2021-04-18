@@ -27,6 +27,10 @@ def about():
 def info():
     return render_template('info.html')
 
+@app.route('/play/')
+def play():
+    return render_template('game/index.html')
+
 @app.route('/favicon.ico')
 def favicon():
     return send_from_directory(os.path.join(app.root_path, 'static'),
