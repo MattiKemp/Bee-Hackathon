@@ -5,11 +5,32 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tutorial 2</title>
+    <title>Game</title>
     <script src="https://cdn.jsdelivr.net/npm/phaser@3.54.0/dist/phaser-arcade-physics.min.js"></script>
 </head>
 <body>
     <script>
+        var dynamicData;
+        var obstacles;
+        var dynamicSprites = [];
+        var load = false;
+        var ws = new WebSocket("ws://127.0.0.1:5678/");
+            ws.onopen = function(e){
+                ws.send("data:" + '[100,450,2,0,0,0,0]');
+                ws.send("update");
+                ws.send("obstacles");
+                //ws.send("user");
+            };
+            ws.onmessage = function (event) {
+                if(event.data.substring(0,1) == "o"){
+                    obstacles = JSON.parse(event.data.substring(1,event.data.length));
+                    //console.log(obstacles[0]);
+                }
+                else if(event.data.substring(0,1) == "d"){
+                    dynamicData = JSON.parse(event.data.substring(1,event.data.length));
+                }
+                //console.log(event.data);
+            };
         var config = {
             type: Phaser.AUTO,
             width: 800,
@@ -33,12 +54,16 @@
         {
             //loading assets
             //Photo by Berend de Kort from Pexels
-            this.load.image('ocean', '/static/assets/img/ocean.jpg');
-            this.load.image('ground', '/static/assets/img/ground.png');
+            //this.load.image('ocean', '/static/assets/img/ocean.jpg');
+            this.load.image('ocean', './assets/ocean.jpg');
+            //this.load.image('ground', '/static/assets/img/ground.png');
+            this.load.image('ground', './assets/ground.png');
             //Photo by mali maeder from Pexels
-            this.load.image('apple', '/static/assets/img/apple.jpg');
+            //this.load.image('apple', '/static/assets/img/apple.jpg');
+            this.load.image('apple', './assets/apple.jpg');
             //Photo by Gezer Amorim from Pexels
-            this.load.image('droplet', '/static/assets/img/droplet.jpeg');
+            //this.load.image('droplet', '/static/assets/img/droplet.jpeg');
+            this.load.image('droplet', './assets/droplet.jpeg');
         }
     
         function create ()
@@ -50,12 +75,16 @@
             //this.add.tileSprite(0,0,1000,1000, 'ocean');
             //adding platforms
             platforms = this.physics.add.staticGroup();
-            platforms.create(400, 825, 'ground').setScale(4).refreshBody();
-            platforms.create(600, 500, 'ground');
-            platforms.create(50, 250, 'ground');
-            //players
-            player = this.physics.add.sprite(100, 450, 'apple').setScale(.02);
+            //platforms.create(400, 825, 'ground').setScale(4).refreshBody();
+            //platforms.create(600, 500, 'ground');
+            //platforms.create(50, 250, 'ground');
+            for(var i = 0; i < obstacles.length; i++){
+                platforms.create(obstacles[i][0],obstacles[i][1],'ground');
+            }
 
+            //players
+            player = this.physics.add.sprite(100, 450, 'apple').setScale(.02).setVelocity(100,100);
+            //console.log(this.player.velocity);
             player.setBounce(0.2);
             //player.setCollideWorldBounds(true);
             //animations aren't done properly here
@@ -86,12 +115,25 @@
             cursors = this.input.keyboard.createCursorKeys();
 
             //collectable water droplets
-            droplets = this.physics.add.group({
-                key: 'droplet',
-                repeat: 11,
-                setXY: { x: 12, y: 0, stepX: 70 }
-            });
-
+            //droplets = this.physics.add.group({
+            //    key: 'droplet',
+                //repeat: 0,
+                //setXY: { x: 12, y: 0, stepX: 70 }
+            //});
+            droplets = this.physics.add.staticGroup();
+            for(var i = 0; i < dynamicData[1].length; i++){
+                //if(dynamicData[2][i]){
+                    //droplets.create(dynamicData[i][0],dynamicData[i][1],'droplet');
+                    //dynamicSprites.push(this.physics.add.sprite(dynamicData[1][i][0],dynamicData[1][i][1],'droplet'));
+                    //this.physics.add.sprite(dynamicData[1][i][0],dynamicData[1][i][1],'droplet')
+                    //console.log("test");
+                    dynamicSprites.push(droplets.create(dynamicData[1][i][0],dynamicData[1][i][1],'droplet'));
+                //}
+            }
+            for(var i = 0; i < dynamicData[0].length; i++){
+                dynamicSprites.push(this.physics.add.sprite(dynamicData[0][i][0],dynamicData[0][i][1],'apple').setScale(.02));//.setVelocity(dynamicData[0][i][3],dynamicData[0][i][4]));
+            }
+            //platforms.create(obstacles[i][0],obstacles[i][1],'ground');
             droplets.children.iterate(function (child) {
 
                 child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
@@ -105,8 +147,8 @@
             this.physics.add.overlap(player, droplets, collectDroplet, null, this);
             function collectDroplet (player, droplet)
             {
-                droplet.disableBody(true, true);
-                score += 10;
+                //droplet.disableBody(true, true);
+                //score += 10;
                 scoreText.setText('Score: ' + score);
                 //creates a bomb once all stars are collected
                 // if (droplets.countActive(true) === 0)
@@ -148,7 +190,20 @@
             //     gameOver = true;
             // }
            //game.camera.follow(apple);
-           this.cameras.main.startFollow(player);
+            this.cameras.main.startFollow(player);
+            async function reload(){
+                await ws.send("update");
+                score = dynamicData[3][0][5];
+                var playerData = [parseInt(this.player.x), parseInt(this.player.y), 2, 0, 0, score, 0];
+                console.log("data:" + String(playerData));
+                await ws.send("data:[" + String(playerData)+"]");
+                console.log(dynamicData[3]);
+                for(var i = 0; i < dynamicSprites.length; i++){
+                    dynamicSprites[i].destroy();
+                }
+                load = true;
+            }
+            setInterval(reload,100);
         }
 
         function update()
@@ -186,6 +241,17 @@
             //{
             //    player.setVelocityY(-330);
             //}
+            if(load){
+                //console.log(dynamicData[3][5]);
+                for(var i = 0; i < dynamicData[1].length; i++){
+                    //dynamicSprites.push(this.physics.add.sprite(dynamicData[1][i][0],dynamicData[1][i][1],'droplet'));
+                    dynamicSprites.push(droplets.create(dynamicData[1][i][0],dynamicData[1][i][1],'droplet'));
+                }
+                for(var i = 0; i < dynamicData[0].length; i++){
+                    dynamicSprites.push(this.physics.add.sprite(dynamicData[0][i][0],dynamicData[0][i][1],'apple').setScale(.02).setVelocity(dynamicData[0][i][3]));
+                }
+                load = false;
+            }
         }
 
         function render(){

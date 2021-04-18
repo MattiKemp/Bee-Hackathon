@@ -27,18 +27,22 @@ async def time(websocket, path):
         if("data" in message):
             data['info'] = [int(x) for x in message[6:-1].split(',')]
             #print([int(x) for x in message[6:-1].split(',')])
-            game.update()
         if("update" in message):
-            await websocket.send(encodeJSON(game.getData(data['info'])))
+            game.update()
+            await websocket.send("d" + encodeJSON(game.getData(data['info'])))
+        if("obstacles" in message):
+            await websocket.send("o" + encodeJSON(list(game.obstacles)))
+        #if("user" in message):
+        #    await websocket.send("u" + encodeJSON(data['info']))
         #now = datetime.datetime.utcnow().isoformat() + 'Z'
         #await websocket.send(now)
         #await asyncio.sleep(random.random() * 3)
         
-        print(data)
-    while True:
+        #print(data)
+    #while True:
         #now = datetime.datetime.utcnow().isoformat() + 'Z'
         #await websocket.send(now)
-        await asyncio.sleep(random.random() * 3)
+    #    await asyncio.sleep(random.random() * 3)
         #print('test')
         #print(time.time())
         #if (time.time() - lastupdate == 6000):
