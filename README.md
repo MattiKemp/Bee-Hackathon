@@ -11,7 +11,7 @@ Contains a game that allows you to play as a sea-creature, dealing with the day-
 
 
 ## How we built it
-Our application is built on the Python Flask microframework, using the Bootstrap CSS Library. Most of the website is pure HTML/CSS/Javascript. Playing the game utilizes the tie between these formats and allows for a smooth, educational experience.
+Our application is built on the Python Flask microframework, using the Bootstrap CSS Library. Most of the website is pure HTML/CSS/Javascript while the game is written using phaser game framework. Playing the game utilizes the tie between these formats and allows for a smooth, educational experience.
 
 This is hosted on a personal linux machine using nginx and gunicorn.
 
